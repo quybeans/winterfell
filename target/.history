@@ -1,1 +1,12 @@
 run
+exit
+ls
+run
+reload
+run
+compile
+run
+sbt
+run
+ls
+run

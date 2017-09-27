@@ -4,7 +4,7 @@
 		module="winterfell-build"
 		revision="0.1-SNAPSHOT"
 		status="integration"
-		publication="20170926124433"
+		publication="20170927130057"
 		e:sbtVersion="1.0" e:scalaVersion="2.12"
 	>
 		<description>

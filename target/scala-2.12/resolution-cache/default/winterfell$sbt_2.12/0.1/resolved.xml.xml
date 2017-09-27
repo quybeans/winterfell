@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
+	<info organisation="default"
+		module="winterfell$sbt_2.12"
+		revision="0.1"
+		status="integration"
+		publication="20170927131308"
+	/>
+	<configurations>
+		<conf name="compile" visibility="public" description=""/>
+		<conf name="runtime" visibility="public" description="" extends="compile"/>
+		<conf name="test" visibility="public" description="" extends="runtime"/>
+		<conf name="provided" visibility="public" description=""/>
+		<conf name="optional" visibility="public" description=""/>
+	</configurations>
+	<publications>
+	</publications>
+	<dependencies>
+		<dependency org="org.scala-sbt" name="sbt" rev="1.0.2" conf="compile->default(compile)"/>
+		<dependency org="org.scalastyle" name="scalastyle-sbt-plugin" rev="1.0.0" conf="compile->default(compile)" scalaVersion="2.12" sbtVersion="1.0"/>
+		<dependency org="org.scalastyle" name="scalastyle_2.12" rev="1.0.0" conf="compile->default(compile)"/>
+		<dependency org="org.scala-lang" name="scala-library" rev="2.12.3" conf="compile->default(compile)" info.apiURL="http://www.scala-lang.org/api/2.12.3/"/>
+		<dependency org="org.scalariform" name="scalariform_2.12" rev="0.2.0" conf="compile->default(compile)"/>
+		<dependency org="org.scala-lang.modules" name="scala-xml_2.12" rev="1.0.6" conf="compile->default(compile)"/>
+		<dependency org="org.scala-lang.modules" name="scala-parser-combinators_2.12" rev="1.0.6" conf="compile->default(compile)"/>
+		<dependency org="com.typesafe" name="config" rev="1.2.0" conf="compile->default(compile)"/>
+	</dependencies>
+</ivy-module>

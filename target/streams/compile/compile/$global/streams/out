@@ -1,0 +1,13 @@
+[0m[[0m[31merror[0m] [0m[0m/Users/khang/winterfell/src/main/scala/uniq/mqttchat/client/AdminClient.scala:61:64: ')' expected but string literal found.[0m
+[0m[[0m[31merror[0m] [0m[0m      println(s"Can not add ACL rule. The username \"$username\" does not exist.")[0m
+[0m[[0m[31merror[0m] [0m[0m                                                               ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/khang/winterfell/src/main/scala/uniq/mqttchat/client/AdminClient.scala:86:40: ')' expected but string literal found.[0m
+[0m[[0m[31merror[0m] [0m[0m        println(s"username \"$username\" does not exist")[0m
+[0m[[0m[31merror[0m] [0m[0m                                       ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/khang/winterfell/src/main/scala/uniq/mqttchat/client/AdminClient.scala:98:38: ')' expected but string literal found.[0m
+[0m[[0m[31merror[0m] [0m[0m      println(s"username \"$username\" already exist.")[0m
+[0m[[0m[31merror[0m] [0m[0m                                     ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/khang/winterfell/src/main/scala/uniq/mqttchat/client/AdminClient.scala:99:60: ';' expected but ',' found.[0m
+[0m[[0m[31merror[0m] [0m[0m    else addACLRuleImp(username, userTopic.format(username), true, true)[0m
+[0m[[0m[31merror[0m] [0m[0m                                                           ^[0m
+[0m[[0m[31merror[0m] [0m[0mfour errors found[0m

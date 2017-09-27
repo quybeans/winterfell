@@ -4,7 +4,7 @@
 		module="winterfell_2.12"
 		revision="0.1"
 		status="integration"
-		publication="20170926124513"
+		publication="20170927162705"
 	>
 		<description>
 		winterfell
@@ -32,5 +32,10 @@
 	<dependencies>
 		<dependency org="org.scala-lang" name="scala-compiler" rev="2.12.3" conf="scala-tool->default,optional(default)"/>
 		<dependency org="org.scala-lang" name="scala-library" rev="2.12.3" conf="scala-tool->default,optional(default);compile->default(compile)"/>
+		<dependency org="org.scalaj" name="scalaj-http_2.12" rev="2.3.0" conf="compile->default(compile)"/>
+		<dependency org="org.eclipse.paho" name="org.eclipse.paho.client.mqttv3" rev="1.1.1" conf="compile->default(compile)"/>
+		<dependency org="io.circe" name="circe-core_2.12" rev="0.8.0" conf="compile->default(compile)"/>
+		<dependency org="io.circe" name="circe-generic_2.12" rev="0.8.0" conf="compile->default(compile)"/>
+		<dependency org="io.circe" name="circe-parser_2.12" rev="0.8.0" conf="compile->default(compile)"/>
 	</dependencies>
 </ivy-module>
