@@ -11,6 +11,7 @@ import uniq.networking.mqtt.base.model.MQTTCreateUserRequest
 import uniq.networking.mqtt.base.model.MQTTDeleteUserRequest
 import scala.io.StdIn
 
+import org.eclipse.paho.client.mqttv3.MqttTopic
 import uniq.networking.mqtt.base.model.MQTTDeleteACLRuleRequest
 
 final case class AdminClient(username: String, password: String) extends BaseClient(username, password) {
@@ -39,7 +40,8 @@ final case class AdminClient(username: String, password: String) extends BaseCli
     val topic = StdIn.readLine("Topic: ")
     val canRead = StdIn.readLine("Can read: ").toBoolean
     val canWrite = StdIn.readLine("Can write: ").toBoolean
-    addACLRuleImp(username, topic, canRead, canWrite)
+    if (!addACLRuleImp(username, topic, canRead, canWrite))
+      println(s"Can not add ACL rule. The username $username does not exist.")
   }
 
   private def addACLRuleImp(
@@ -47,7 +49,7 @@ final case class AdminClient(username: String, password: String) extends BaseCli
     topic: String,
     canRead: Boolean,
     canWrite: Boolean
-  ): Unit = {
+  ): Boolean = {
     val data = MQTTCreateACLRuleRequest.encoder.apply(
       MQTTCreateACLRuleRequest(
         username,
@@ -57,8 +59,7 @@ final case class AdminClient(username: String, password: String) extends BaseCli
       )
     ).noSpaces
     val result = httpRequest(aclURL, "POST", data)
-    if (204 != result.code)
-      println(s"Can not add ACL rule. The username $username does not exist.")
+    204 == result.code
   }
 
   def deleteACLRule: Unit = {
@@ -66,14 +67,18 @@ final case class AdminClient(username: String, password: String) extends BaseCli
     val topic: String = StdIn.readLine("topic: ")
     val confirm = StdIn.readLine("Are you sure? ")
     if (confirm == "yes") {
-      val data = MQTTDeleteACLRuleRequest.encoder.apply(
+      if (!deleteACLRuleImp(username, topic))
+        println("username or topic name does not exist")
+    }
+  }
+
+  def deleteACLRuleImp(username: String, topic: String): Boolean = {
+    val data = MQTTDeleteACLRuleRequest.encoder.apply(
         MQTTDeleteACLRuleRequest(username,topic)
       )
       .noSpaces
       val result = httpRequest(aclURL, "DELETE", data)
-      if (204 != result.code)
-        println("username or topic name does not exist")
-    }
+      204 == result.code
   }
 
   private def deleteUser: Unit = {
@@ -82,8 +87,13 @@ final case class AdminClient(username: String, password: String) extends BaseCli
     if (confirm == "yes") {
       val data = MQTTDeleteUserRequest(username)
       val result = httpRequest(userURL.format(username), "DELETE")
-      if (204 != result.code)
+      if (204 != result.code) {
         println(s"username $username does not exist")
+      }
+      else {
+        deleteACLRuleImp(username, userTopic.format(username))
+        deleteACLRuleImp("admin", userTopic.format(username))
+      }
     }
   }
 
@@ -98,7 +108,7 @@ final case class AdminClient(username: String, password: String) extends BaseCli
       println(s"username $username already exist.")
     else
       {
-        addACLRuleImp(username, userTopic.format(username), true, false)
+        addACLRuleImp(username, userTopic.format(username), true, true)
         addACLRuleImp("admin", userTopic.format(username), true, true)
       }
   }
@@ -109,5 +119,5 @@ object AdminClient {
   def apply(username: String, password: String): AdminClient = new AdminClient(username, password)
   private val userURL = "https://api.cloudmqtt.com/user/%s"
   private val aclURL = "https://api.cloudmqtt.com/acl"
-  private val userTopic = "uniq/mqtt/client/%s"
+  private val userTopic = "uniq/mqtt/chat/client/%s"
 }
