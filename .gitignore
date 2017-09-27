@@ -3,3 +3,8 @@
 
 # IDE files
 /.idea/
+
+# Output and build files
+/output/
+target/
+!.kepp
