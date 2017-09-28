@@ -98,8 +98,16 @@ object BaseClient{
   private val chanelTopic = "uniq/mqtt/chat/chanel/"
   private val cloudMqttUser = "piybrutp"
   private val cloudMqttPass = "04hHfiCooyL_"
-  private val alcRulesUrl = "https://api.cloudmqtt.com/acl"
+  val userURL = "https://api.cloudmqtt.com/user/%s"
+  val aclURL = "https://api.cloudmqtt.com/acl"
+  val userTopic = "uniq/mqtt/chat/client/%s"
+  val channelTopic = "uniq/mqtt/chat/chanel/%s"
   val GET = "GET"
   val DELETE = "DELETE"
   val POST = "POST"
+  val areYouSure = "Are you sure [Y/N]? "
+  val Y = "Y"
+  val strChannel = "channel: "
+  val strUsername = "username: "
+
 }

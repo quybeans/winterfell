@@ -108,8 +108,4 @@ class UserClient(username: String, password: String) extends BaseClient(username
 
 object UserClient{
   def apply(username: String, password: String): UserClient = new UserClient(username, password)
-  private val userURL = "https://api.cloudmqtt.com/user/%s"
-  private val aclURL = "https://api.cloudmqtt.com/acl"
-  private val userTopic = "uniq/mqtt/chat/client/%s"
-  private val channelTopic = "uniq/mqtt/chat/chanel/%s"
 }

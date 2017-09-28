@@ -31,6 +31,9 @@ final case class AdminClient(
     println("5. Delete an access control rule")
     println("6. List all access control rules")
     println("7. List all access control rules by username")
+    println("8. Create chat channel")
+    println("9. Delete a chat channel")
+    println("10 Ban user from a chat channel")
     println("0. exit")
     val cmd = StdIn.readLine("Please select your option: ")
     cmd match {
@@ -41,6 +44,9 @@ final case class AdminClient(
       case "5" => deleteACLRule
       case "6" => listAllACLRules
       case "7" => listACLRulesByUsername
+      case "8" => createChatChannel
+      case "9" => deleteChatChannel
+      case "10" => banUserFromChatChannel
       case _ =>
         this.disconnect
         System.exit(0)
@@ -50,14 +56,17 @@ final case class AdminClient(
     printCommand
   }
 
-  private def listAllUsers: Unit = {
+  private def getListAllUsers: List[MQTTUser] = {
     val result = httpRequest(userURL.format(""), GET)
-    val listUser = io.circe.parser.decode[List[MQTTUser]](result.body).toTry.get
-    listUser.foreach(x => println(x.username))
+    io.circe.parser.decode[List[MQTTUser]](result.body).toTry.get
+  }
+
+  private def listAllUsers: Unit = {
+    getListAllUsers.foreach(x => println(x.username))
   }
 
   private def listAllACLRules: Unit = {
-    val result = httpRequest(aclURL, "GET")
+    val result = httpRequest(aclURL, GET)
     val listUser = io.circe.parser.decode[List[MQTTACLRule]](result.body).toTry.get
     printf("%-10s\t%-30s\t%-5s\t%-5s\n", "username", "topic", "read", "write")
     listUser.foreach(x =>
@@ -72,7 +81,7 @@ final case class AdminClient(
   }
 
   private def listACLRulesByUsername: Unit = {
-    val username = StdIn.readLine("username: ")
+    val username = StdIn.readLine(strUsername)
     val result = httpRequest(userURL.format(username), GET)
     if (result.code != 200) {
       println(result.body)
@@ -86,7 +95,7 @@ final case class AdminClient(
   }
 
   private def addACLRule: Unit = {
-    val username = StdIn.readLine("Username: ")
+    val username = StdIn.readLine(strUsername)
     val topic = StdIn.readLine("Topic: ")
     val canRead = StdIn.readLine("Can read: ").toBoolean
     val canWrite = StdIn.readLine("Can write: ").toBoolean
@@ -113,18 +122,18 @@ final case class AdminClient(
     204 == result.code
   }
 
-  def deleteACLRule: Unit = {
-    val username: String = StdIn.readLine("Username: ")
+  private def deleteACLRule: Unit = {
+    val username: String = StdIn.readLine(strUsername)
     val topic: String = StdIn.readLine("topic: ")
-    val confirm = StdIn.readLine("Are you sure [Y/N]? ")
-    if (confirm.toUpperCase == "Y") {
+    val confirm = StdIn.readLine(areYouSure)
+    if (confirm.toUpperCase == Y) {
       if (!deleteACLRuleImp(username, topic)) {
         println("username or topic name does not exist")
       }
     }
   }
 
-  def deleteACLRuleImp(username: String, topic: String): Boolean = {
+  private def deleteACLRuleImp(username: String, topic: String): Boolean = {
     val data = MQTTACLRuleName.encoder.apply(
       MQTTACLRuleName(username, topic)
     ).noSpaces
@@ -133,8 +142,8 @@ final case class AdminClient(
   }
 
   private def deleteUser: Unit = {
-    val username = StdIn.readLine("Username: ")
-    val confirm = StdIn.readLine("Are you sure [Y/N]? ")
+    val username = StdIn.readLine(strUsername)
+    val confirm = StdIn.readLine(areYouSure)
     if (confirm.toUpperCase == "Y") {
       val result = httpRequest(userURL.format(username), DELETE)
       println(result.body)
@@ -149,7 +158,7 @@ final case class AdminClient(
   }
 
   private def createUser: Unit = {
-    val username = StdIn.readLine("Username: ")
+    val username = StdIn.readLine(strUsername)
     val password = StdIn.readLine("Password: ")
     val data = MQTTUser.encoder.apply(
       MQTTUser(username, password)
@@ -164,12 +173,44 @@ final case class AdminClient(
     }
   }
 
+  private def createChatChannel: Unit = {
+    val channel = StdIn.readLine(strChannel)
+    getListAllUsers.foreach(user =>
+      addACLRuleImp(
+        user.username,
+        channelTopic.format(channel),
+        true,
+        true
+      )
+    )
+  }
+
+  private def deleteChatChannel: Unit = {
+    val channel = StdIn.readLine(strChannel)
+    val confirm = StdIn.readLine(areYouSure)
+    if (confirm.toUpperCase == Y) {
+      getListAllUsers.foreach(user =>
+        deleteACLRuleImp(
+          user.username,
+          channelTopic.format(channel)
+        )
+      )
+    }
+  }
+
+  private def banUserFromChatChannel: Unit = {
+    val username: String = StdIn.readLine(strUsername)
+    val channel: String = StdIn.readLine(strChannel)
+    val confirm = StdIn.readLine(areYouSure)
+    if (confirm.toUpperCase == Y) {
+      if (!deleteACLRuleImp(username, channelTopic.format(channel))) {
+        println("username or topic name does not exist")
+      }
+    }
+  }
+
 }
 
 object AdminClient {
   def apply(username: String, password: String): AdminClient = new AdminClient(username, password)
-  private val userURL = "https://api.cloudmqtt.com/user/%s"
-  private val aclURL = "https://api.cloudmqtt.com/acl"
-  private val userTopic = "uniq/mqtt/chat/client/%s"
-  private val channelTopic = "uniq/mqtt/chat/chanel/%s"
 }
