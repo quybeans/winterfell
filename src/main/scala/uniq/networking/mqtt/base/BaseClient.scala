@@ -7,8 +7,11 @@ package uniq.networking.mqtt.base
 import scalaj.http.Http
 import scalaj.http.HttpResponse
 
+import org.eclipse.paho.client.mqttv3.MqttCallback
 import org.eclipse.paho.client.mqttv3.MqttClient
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions
+import org.eclipse.paho.client.mqttv3.MqttMessage
+import uniq.mqttchat.client.Message
 import uniq.networking.mqtt.base.BaseClient._
 // scalastyle:on
 
@@ -44,12 +47,44 @@ class BaseClient(username: String, password: String){
     method: String,
     jsonData: String = ""
   ): HttpResponse[String]  = {
-    Http(url).auth(cloudMqttUser, cloudMqttPass)
-      .header("Content-Type", "application/json")
-      .postData(jsonData)
-      .method(method)
-      .asString
+    if (jsonData.nonEmpty) {
+      Http(url).auth(cloudMqttUser, cloudMqttPass)
+        .header("Content-Type", "application/json")
+        .postData(jsonData)
+        .method(method)
+        .asString
+    }
+    else {
+      Http(url).auth(cloudMqttUser, cloudMqttPass)
+        .method(method)
+        .asString
+    }
   }
+
+  def subscribe(topic: String): Unit = {
+    println(s"subscribe to $topic")
+    connector.subscribe(topic)
+  }
+
+  def unsubscribe(topic: String): Unit = {
+    println(s"unsubscribe to $topic")
+    connector.unsubscribe(topic)
+  }
+
+  def publish(topic: String, msg: Message): Unit = {
+    connector.publish(
+      topic,
+      new MqttMessage(
+        Message.encoder.apply(msg).noSpaces.getBytes()
+      )
+    )
+  }
+
+  def setMqttCallback(callback: MqttCallback): Unit = {
+    connector.setCallback(callback)
+  }
+
+  def isConnected: Boolean = connector.isConnected
 
   def printCommand: Unit = {
     println("disconnect")
@@ -64,4 +99,7 @@ object BaseClient{
   private val cloudMqttUser = "piybrutp"
   private val cloudMqttPass = "04hHfiCooyL_"
   private val alcRulesUrl = "https://api.cloudmqtt.com/acl"
+  val GET = "GET"
+  val DELETE = "DELETE"
+  val POST = "POST"
 }
