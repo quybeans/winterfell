@@ -106,4 +106,5 @@ object BaseClient{
   val Y = "Y"
   val strChannel = "channel: "
   val strUsername = "username: "
+  val HTTPNoContentCode = 204
 }

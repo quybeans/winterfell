@@ -61,7 +61,7 @@ final case class AdminClient(
   }
 
   private def listAllUsers: Unit = {
-    getListAllUsers.foreach(x => println(x.username))
+    getListAllUsers.foreach(user => println(user.username))
   }
 
   private def listAllACLRules: Unit = {
@@ -118,7 +118,7 @@ final case class AdminClient(
       )
     ).noSpaces
     val result = httpRequest(aclURL, POST, data)
-    204 == result.code
+    HTTPNoContentCode == result.code
   }
 
   private def deleteACLRule: Unit = {
@@ -137,7 +137,7 @@ final case class AdminClient(
       MQTTACLRuleName(username, topic)
     ).noSpaces
     val result = httpRequest(aclURL, DELETE, data)
-    204 == result.code
+    HTTPNoContentCode == result.code
   }
 
   private def deleteUser: Unit = {
@@ -146,7 +146,7 @@ final case class AdminClient(
     if (confirm.toUpperCase == "Y") {
       val result = httpRequest(userURL.format(username), DELETE)
       println(result.body)
-      if (204 != result.code) {
+      if (HTTPNoContentCode != result.code) {
         println(s"username $username does not exist")
       }
       else {
@@ -163,7 +163,7 @@ final case class AdminClient(
       MQTTUser(username, password)
     ).noSpaces
     val result = httpRequest(userURL.format(""), POST, data)
-    if (204 != result.code) {
+    if (HTTPNoContentCode != result.code) {
       println(s"username $username already exist.")
     }
     else {

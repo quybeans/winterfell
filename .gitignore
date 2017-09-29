@@ -10,3 +10,5 @@ target/
 
 # To maintain directory structure
 !.keep
+/target/
+/src/main/scala/test.sc
