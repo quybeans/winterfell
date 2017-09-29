@@ -2,7 +2,6 @@
 
 package uniq.networking.mqtt.base
 
-// scalastyle:off underscore.import
 import scalaj.http.Http
 import scalaj.http.HttpResponse
 
@@ -11,6 +10,8 @@ import org.eclipse.paho.client.mqttv3.MqttClient
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions
 import org.eclipse.paho.client.mqttv3.MqttMessage
 import uniq.mqttchat.client.Message
+
+// scalastyle:off underscore.import
 import uniq.networking.mqtt.base.BaseClient._
 // scalastyle:on underscore.import
 

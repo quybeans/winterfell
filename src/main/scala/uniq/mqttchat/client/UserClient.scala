@@ -2,15 +2,16 @@
 
 package uniq.mqttchat.client
 
-// scalastyle:off underscore.import
 import scala.io.StdIn
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
 import org.eclipse.paho.client.mqttv3.MqttCallback
 import org.eclipse.paho.client.mqttv3.MqttMessage
 import uniq.networking.mqtt.base.BaseClient
-import uniq.networking.mqtt.base.BaseClient._
 import uniq.networking.mqtt.base.model.MQTTUserACLRules
+
+// scalastyle:off underscore.import
+import uniq.networking.mqtt.base.BaseClient._
 // scalastyle:on underscore.import
 
 class UserClient(username: String, password: String) extends BaseClient(username, password) {
