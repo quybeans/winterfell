@@ -46,11 +46,11 @@ class UserClient(username: String, password: String) extends BaseClient(username
   }
 
   override def printCommand: Unit = {
-    println("1. join chanel")
+    println("1. join channel")
     println("0. exit")
     val cmd = StdIn.readLine("Please select your option: ")
     cmd match {
-      case "1" => joinChanel
+      case "1" => joinChannel
       case "0" =>
         this.disconnect
         System.exit(0)
@@ -58,8 +58,8 @@ class UserClient(username: String, password: String) extends BaseClient(username
     printCommand
   }
 
-  private def joinChanel: Unit = {
-    listAllChanel
+  private def joinChannel: Unit = {
+    listAllChannel
     val channel = StdIn.readLine("please select a chanel: ")
     subscribe(channelTopic.format(channel))
     doChat(channel)
@@ -81,11 +81,11 @@ class UserClient(username: String, password: String) extends BaseClient(username
     }
   }
 
-  private def listAllChanel: Unit = {
+  private def listAllChannel: Unit = {
     val result = httpRequest(userURL.format(username), GET)
     val userRules = io.circe.parser.decode[MQTTUserACLRules](result.body).toTry.get
     println(s"all chanel of $username")
-    printf("%-30s\t%-5s\t%-5s\n", "chanel", "read", "write")
+    printf("%-30s\t%-5s\t%-5s\n", "channel", "read", "write")
     userRules.acls.foreach(
       acl => {
         val index = acl.topic.indexOf(channelTopic.format(""))
