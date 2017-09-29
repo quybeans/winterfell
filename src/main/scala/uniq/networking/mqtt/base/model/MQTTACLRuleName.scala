@@ -1,5 +1,4 @@
-
-// copyright
+// Copyright (C) 2016-2017 Ark Maxim, Inc.
 
 package uniq.networking.mqtt.base.model
 
@@ -12,5 +11,5 @@ final case class MQTTACLRuleName(
 )
 
 object MQTTACLRuleName {
-  implicit val encoder: Encoder[MQTTACLRuleName] = deriveEncoder[MQTTACLRuleName]
+  implicit val encoder: Encoder[MQTTACLRuleName] = deriveEncoder
 }

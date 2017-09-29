@@ -1,10 +1,8 @@
-
-// copyright
+// Copyright (C) 2016-2017 Ark Maxim, Inc.
 
 package uniq.mqttchat.client
 
-// scalastyle:off
-import scala.concurrent.Channel
+// scalastyle:off underscore.import
 import scala.io.StdIn
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
@@ -13,15 +11,13 @@ import org.eclipse.paho.client.mqttv3.MqttMessage
 import uniq.networking.mqtt.base.BaseClient
 import uniq.networking.mqtt.base.BaseClient._
 import uniq.networking.mqtt.base.model.MQTTUserACLRules
-import uniq.mqttchat.client.UserClient._
-// scalastyle:on
+// scalastyle:on underscore.import
 
 class UserClient(username: String, password: String) extends BaseClient(username, password) {
 
   private[this] lazy val mqttCallback = new MqttCallback {
 
     override def deliveryComplete(token: IMqttDeliveryToken): Unit = {
-
     }
 
     override def connectionLost(cause: Throwable): Unit = {
@@ -103,7 +99,6 @@ class UserClient(username: String, password: String) extends BaseClient(username
       }
     )
   }
-
 }
 
 object UserClient{

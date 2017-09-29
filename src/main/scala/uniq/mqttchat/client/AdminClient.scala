@@ -1,19 +1,17 @@
-
-// copyright
+// Copyright (C) 2016-2017 Ark Maxim, Inc.
 
 package uniq.mqttchat.client
 
-// scalastyle:off
-import uniq.mqttchat.client.AdminClient._
+// scalastyle:off underscore.import
+import scala.io.StdIn
+
 import uniq.networking.mqtt.base.BaseClient
 import uniq.networking.mqtt.base.BaseClient._
 import uniq.networking.mqtt.base.model.MQTTACLRule
-import uniq.networking.mqtt.base.model.MQTTUser
-import scala.io.StdIn
-
 import uniq.networking.mqtt.base.model.MQTTACLRuleName
+import uniq.networking.mqtt.base.model.MQTTUser
 import uniq.networking.mqtt.base.model.MQTTUserACLRules
-// scalastyle:on
+// scalastyle:on underscore.import
 
 final case class AdminClient(
   username: String,
@@ -22,7 +20,7 @@ final case class AdminClient(
     super.login
   }
 
-
+// scalastyle:off cyclomatic.complexity
   override def printCommand: Unit = {
     println("1. Create an user")
     println("2. Delete an user")
@@ -55,6 +53,7 @@ final case class AdminClient(
     StdIn.readLine()
     printCommand
   }
+// scalastyle:on cyclomatic.complexity
 
   private def getListAllUsers: List[MQTTUser] = {
     val result = httpRequest(userURL.format(""), GET)
@@ -208,7 +207,6 @@ final case class AdminClient(
       }
     }
   }
-
 }
 
 object AdminClient {

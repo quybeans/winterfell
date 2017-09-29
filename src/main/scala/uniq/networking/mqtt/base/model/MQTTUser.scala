@@ -1,5 +1,4 @@
-
-// copyright
+// Copyright (C) 2016-2017 Ark Maxim, Inc.
 
 package uniq.networking.mqtt.base.model
 
@@ -14,6 +13,6 @@ final case class MQTTUser(
 )
 
 object MQTTUser {
-  implicit val encoder: Encoder[MQTTUser] = deriveEncoder[MQTTUser]
-  implicit val decoder: Decoder[MQTTUser] = deriveDecoder[MQTTUser]
+  implicit val encoder: Encoder[MQTTUser] = deriveEncoder
+  implicit val decoder: Decoder[MQTTUser] = deriveDecoder
 }

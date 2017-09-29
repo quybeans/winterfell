@@ -1,5 +1,4 @@
-
-// copyright
+// Copyright (C) 2016-2017 Ark Maxim, Inc.
 
 package uniq.networking.mqtt.base.model
 
@@ -12,10 +11,10 @@ final case class MQTTACLRule(
   username: String,
   topic: String,
   read: Boolean,
-  write: Boolean,
+  write: Boolean
 )
 
 object MQTTACLRule {
-  implicit val encoder: Encoder[MQTTACLRule] = deriveEncoder[MQTTACLRule]
-  implicit val decoder: Decoder[MQTTACLRule] = deriveDecoder[MQTTACLRule]
+  implicit val encoder: Encoder[MQTTACLRule] = deriveEncoder
+  implicit val decoder: Decoder[MQTTACLRule] = deriveDecoder
 }

@@ -1,13 +1,11 @@
-
-// copyright
+// Copyright (C) 2016-2017 Ark Maxim, Inc.
 
 package uniq.mqttchat.client
-// scalastyle:off
+
 import io.circe.Decoder
 import io.circe.Encoder
 import io.circe.generic.semiauto.deriveDecoder
 import io.circe.generic.semiauto.deriveEncoder
-// scalastyle:on
 
 final case class Message(
   username: String,

@@ -1,5 +1,4 @@
-
-// copyright
+// Copyright (C) 2016-2017 Ark Maxim, Inc.
 
 package uniq.networking.mqtt.base.model
 
@@ -12,6 +11,6 @@ final case class MQTTUserACLRules(
   acls: List[MQTTUserACLRule]
 )
 
-object MQTTUserACLRules{
+object MQTTUserACLRules {
   implicit val decoder: Decoder[MQTTUserACLRules] = deriveDecoder
 }

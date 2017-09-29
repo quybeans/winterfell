@@ -1,5 +1,4 @@
-
-// copyright
+// Copyright (C) 2016-2017 Ark Maxim, Inc.
 
 package uniq.networking.mqtt.base.model
 
@@ -12,6 +11,6 @@ final case class MQTTUserACLRule(
   write: Boolean
 )
 
-object MQTTUserACLRule{
+object MQTTUserACLRule {
   implicit val decoder: Decoder[MQTTUserACLRule] = deriveDecoder
 }

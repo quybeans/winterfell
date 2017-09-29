@@ -1,3 +1,5 @@
+// Copyright (C) 2016-2017 Ark Maxim, Inc.
+
 name := "winterfell"
 
 version := "0.1"

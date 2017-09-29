@@ -7,4 +7,6 @@
 # Output and build files
 /output/
 target/
-!.kepp
+
+# To maintain directory structure
+!.keep

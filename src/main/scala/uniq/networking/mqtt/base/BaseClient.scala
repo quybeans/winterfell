@@ -1,9 +1,8 @@
-
-// copyright
+// Copyright (C) 2016-2017 Ark Maxim, Inc.
 
 package uniq.networking.mqtt.base
 
-// scalastyle:off
+// scalastyle:off underscore.import
 import scalaj.http.Http
 import scalaj.http.HttpResponse
 
@@ -13,15 +12,14 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions
 import org.eclipse.paho.client.mqttv3.MqttMessage
 import uniq.mqttchat.client.Message
 import uniq.networking.mqtt.base.BaseClient._
-// scalastyle:on
+// scalastyle:on underscore.import
 
-class BaseClient(username: String, password: String){
+class BaseClient(username: String, password: String) {
 
   private[this] val settings = new MqttConnectOptions()
 
-  private[this] def setAuth(username: String, password: String): Unit ={
-    if (username.length > 0 && password.length > 0)
-    {
+  private[this] def setAuth(username: String, password: String): Unit = {
+    if (username.length > 0 && password.length > 0) {
       settings.setUserName(username)
       settings.setPassword(password.toArray)
     }
@@ -90,7 +88,6 @@ class BaseClient(username: String, password: String){
     println("disconnect")
     disconnect
   }
-
 }
 
 object BaseClient{
@@ -109,5 +106,4 @@ object BaseClient{
   val Y = "Y"
   val strChannel = "channel: "
   val strUsername = "username: "
-
 }
