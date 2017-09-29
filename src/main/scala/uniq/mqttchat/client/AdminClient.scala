@@ -2,15 +2,16 @@
 
 package uniq.mqttchat.client
 
-// scalastyle:off underscore.import
 import scala.io.StdIn
 
 import uniq.networking.mqtt.base.BaseClient
-import uniq.networking.mqtt.base.BaseClient._
 import uniq.networking.mqtt.base.model.MQTTACLRule
 import uniq.networking.mqtt.base.model.MQTTACLRuleName
 import uniq.networking.mqtt.base.model.MQTTUser
 import uniq.networking.mqtt.base.model.MQTTUserACLRules
+
+// scalastyle:off underscore.import
+import uniq.networking.mqtt.base.BaseClient._
 // scalastyle:on underscore.import
 
 final case class AdminClient(
@@ -20,7 +21,7 @@ final case class AdminClient(
     super.login
   }
 
-// scalastyle:off cyclomatic.complexity
+  // scalastyle:off cyclomatic.complexity
   override def printCommand: Unit = {
     println("1. Create an user")
     println("2. Delete an user")
@@ -53,7 +54,7 @@ final case class AdminClient(
     StdIn.readLine()
     printCommand
   }
-// scalastyle:on cyclomatic.complexity
+  // scalastyle:on cyclomatic.complexity
 
   private def getListAllUsers: List[MQTTUser] = {
     val result = httpRequest(userURL.format(""), GET)
@@ -68,13 +69,13 @@ final case class AdminClient(
     val result = httpRequest(aclURL, GET)
     val listUser = io.circe.parser.decode[List[MQTTACLRule]](result.body).toTry.get
     printf("%-10s\t%-30s\t%-5s\t%-5s\n", "username", "topic", "read", "write")
-    listUser.foreach(x =>
+    listUser.foreach(aclRule =>
       printf(
         "%-10s\t%-30s\t%-5s\t%-5s\n",
-        x.username,
-        x.topic,
-        x.read,
-        x.write
+        aclRule.username,
+        aclRule.topic,
+        aclRule.read,
+        aclRule.write
       )
     )
   }
@@ -89,7 +90,14 @@ final case class AdminClient(
       val userRules = io.circe.parser.decode[MQTTUserACLRules](result.body).toTry.get
       println(s"ACL rules of $username")
       printf("%-30s\t%-5s\t%-5s\n", "topic", "read", "write")
-      userRules.acls.foreach(x => printf("%-30s\t%-5s\t%-5s\n", x.topic, x.read, x.write))
+      userRules.acls.foreach(aclRule =>
+        printf(
+          "%-30s\t%-5s\t%-5s\n",
+          aclRule.topic,
+          aclRule.read,
+          aclRule.write
+        )
+      )
     }
   }
 
